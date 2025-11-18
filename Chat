@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+<script type='text/javascript'>
+    function initEmbeddedMessaging() {
+        try {
+            embeddedservice_bootstrap.settings.language = 'en_UK';
+            embeddedservice_bootstrap.settings.displayHelpButton = true;
+        	embeddedservice_bootstrap.settings.defaultMinimizedText = 'Chat Now';
+        	embeddedservice_bootstrap.settings.offlineSupportMinimizedText = 'Chat Now';
+            
+            let firstName = "",
+                lastName = "",
+                email = "";
+            
+            const cardRows = document.getElementsByClassName("b-account-card__row");
+            if (cardRows && cardRows.length > 0) {
+                Array.from(cardRows).forEach((input, index) => {
+                    if(index === 0) firstName = input.textContent?.split(":")[1]?.trim() || "";
+                    else if(index === 1) lastName = input.textContent?.split(":")[1]?.trim() || "";
+                    else if(index === 2) email = input.textContent?.split(":")[1]?.trim() || "";
+                });
+            }
+            
+            
+            let prechatFields = {};
+            if (firstName) {
+                prechatFields["_firstName"] = {
+                    "value": firstName,
+                    "isEditableByEndUser": false
+                };
+            }
+            if (lastName) {
+                prechatFields["_lastName"] = {
+                    "value": lastName,
+                    "isEditableByEndUser": false
+                };
+            }
+            if (email) {
+                prechatFields["_email"] = {
+                    "value": email,
+                    "isEditableByEndUser": false
+                };
+            }
+            
+            window.addEventListener("onEmbeddedMessagingReady", e => {
+                embeddedservice_bootstrap.prechatAPI.setVisiblePrechatFields(prechatFields);
+            });
+                
+                embeddedservice_bootstrap.init(
+                '00DPw00000EjmjZ',
+                'Enhanced_Web_Channel',
+                'https://cardfactory--intdev.sandbox.my.site.com/ESWEnhancedWebChannel1762964796497',
+                {
+                scrt2URL: 'https://cardfactory--intdev.sandbox.my.salesforce-scrt.com'
+            }
+                                   );
+        } catch (err) {
+            console.error('Error loading Embedded Messaging: ', err);
+        }
+    };
+    </script>
+    <script type='text/javascript' src='https://cardfactory--intdev.sandbox.my.site.com/ESWEnhancedWebChannel1762964796497/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
+    
+</body>
+</html>
